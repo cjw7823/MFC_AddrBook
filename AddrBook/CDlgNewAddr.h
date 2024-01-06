@@ -24,4 +24,9 @@ protected:
 public:
 	CString m_strName;
 	CString m_strPhone;
+
+	CEdit m_EditCtrl;
+	afx_msg void OnEnChangeEditPhone();
+
+	bool IsNumeric(const CString& str);
 };

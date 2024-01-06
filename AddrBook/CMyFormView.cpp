@@ -4,7 +4,10 @@
 #include "pch.h"
 #include "AddrBook.h"
 #include "CMyFormView.h"
+#include "CDlgNewAddr.h"
 
+#include "AddrBookDoc.h"
+#include "AddrBookView.h"
 
 // CMyFormView
 
@@ -20,22 +23,45 @@ CMyFormView::~CMyFormView()
 {
 }
 
+CAddrBookDoc* CMyFormView::GetDocument() const
+{
+
+	CAddrBookView* parent = static_cast<CAddrBookView*>(GetParent());
+	return parent->GetDocument();
+}
+
 void CMyFormView::OnDraw(CDC* pDC)
 {
-	CListBox* pListBox = static_cast<CListBox*>(GetDlgItem(IDC_LIST1));
-	if (pListBox != nullptr)
-	{
-		listbox = pListBox;
-	}
+
+}
+
+BOOL CMyFormView::Create(LPCTSTR a, LPCTSTR b, DWORD c,	const RECT& d, CWnd* e, UINT f, CCreateContext* g)
+{
+	return __super::Create(a, b, c, d, e, f, g);;
 }
 
 void CMyFormView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+
+	DDX_Control(pDX, IDC_LIST1, listbox);
 }
 
 BEGIN_MESSAGE_MAP(CMyFormView, CFormView)
-	ON_BN_CLICKED(IDC_BUTTON2, &CMyFormView::OnBnClickedButton2)
+	//ON_WM_SETFOCUS()
+	// 표준 인쇄 명령입니다.
+	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
+	ON_WM_CREATE()
+	ON_WM_SIZE()
+	//저장 명령
+	ON_COMMAND(ID_FILE_SAVE, &CMyFormView::OnSaveFile)
+	//커스텀
+	ON_COMMAND(ID_New_Addr, &CMyFormView::OnNewAddr)
+	ON_COMMAND(ID_SEARCH, &CMyFormView::OnSearch)
+	ON_BN_CLICKED(IDC_BUTTON_ADD_ADDR, &CMyFormView::OnNewAddr)
+	ON_BN_CLICKED(IDC_BUTTON_SEARCH, &CMyFormView::OnSearch)
 END_MESSAGE_MAP()
 
 
@@ -58,8 +84,36 @@ void CMyFormView::Dump(CDumpContext& dc) const
 
 // CMyFormView 메시지 처리기
 
-
-void CMyFormView::OnBnClickedButton2()
+void CMyFormView::OnNewAddr()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CDlgNewAddr dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		listbox.AddString(dlg.m_strName + _T(" [") + dlg.m_strPhone + _T("]"));
+		GetDocument()->NewAddr(dlg.m_strName, dlg.m_strPhone);
+	}
 }
+
+void CMyFormView::OnSearch()
+{
+	CDlgNewAddr dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CUserData user = GetDocument()->FindUser(dlg.m_strName);
+		if (user.GetName().IsEmpty())
+			AfxMessageBox(_T("Not found"));
+		else
+			AfxMessageBox(user.GetName() + _T(" ") + user.GetPhone());
+	}
+}
+
+void CMyFormView::OnSaveFile()
+{
+}
+
+
+//void CMyFormView::OnSetFocus(CWnd* pOldWnd)
+//{
+	//CFormView::OnSetFocus(pOldWnd);
+//	GetParentFrame()->SendMessage(WM_COMMAND, 1, (LPARAM)GetDlgItem(IDR_AddrBookTYPE));
+//}

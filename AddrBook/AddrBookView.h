@@ -42,7 +42,6 @@ protected:
 protected:
 	DECLARE_MESSAGE_MAP()
 private:
-	CListBox m_WndList;
 	CView* m_FormView;
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

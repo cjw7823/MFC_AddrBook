@@ -118,15 +118,6 @@ int CAddrBookView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void CAddrBookView::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
-	
-	if (m_FormView)
-	{
-		CMyFormView* pView = dynamic_cast<CMyFormView*>(m_FormView);
-		if (pView && pView->listbox)
-		{
-			pView->listbox->MoveWindow(0, 0, 30, cy - 10);
-		}
-	}
 
 }
 
@@ -136,7 +127,8 @@ void CAddrBookView::OnNewAddr()
 	CDlgNewAddr dlg;
 	if (dlg.DoModal() == IDOK) 
 	{
-		m_WndList.AddString(dlg.m_strName + _T("[") + dlg.m_strPhone + _T("]"));
+		CMyFormView* formView = static_cast<CMyFormView*>(m_FormView);
+		formView->listbox.AddString(dlg.m_strName + _T(" [") + dlg.m_strPhone + _T("]"));
 		GetDocument()->NewAddr(dlg.m_strName, dlg.m_strPhone);
 	}
 }
