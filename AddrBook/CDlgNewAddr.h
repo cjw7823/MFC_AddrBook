@@ -10,6 +10,7 @@ class CDlgNewAddr : public CDialogEx
 
 public:
 	CDlgNewAddr(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	CDlgNewAddr(CString name, CString phone, CWnd* pParent = nullptr);
 	virtual ~CDlgNewAddr();
 
 // 대화 상자 데이터입니다.
@@ -25,8 +26,10 @@ public:
 	CString m_strName;
 	CString m_strPhone;
 
-	CEdit m_EditCtrl;
+	CEdit m_NameCtrl;
+	CEdit m_PhoneCtrl;
 	afx_msg void OnEnChangeEditPhone();
 
-	bool IsNumeric(const CString& str);
+	//숫자와 '-' 판별.
+	bool IsNumeric(const wchar_t& str);
 };

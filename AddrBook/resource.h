@@ -16,6 +16,8 @@
 #define IDC_BUTTON_ADD_ADDR             1020
 #define IDC_BUTTON3                     1022
 #define IDC_BUTTON_SEARCH               1022
+#define IDC_BUTTON_SEARCH2              1023
+#define IDC_BUTTON_EDIT                 1023
 #define IDC_LIST2                       1024
 #define IDC_LIST1                       1024
 #define IDC_EDIT1                       1025

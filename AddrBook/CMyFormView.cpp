@@ -62,6 +62,7 @@ BEGIN_MESSAGE_MAP(CMyFormView, CFormView)
 	ON_COMMAND(ID_SEARCH, &CMyFormView::OnSearch)
 	ON_BN_CLICKED(IDC_BUTTON_ADD_ADDR, &CMyFormView::OnNewAddr)
 	ON_BN_CLICKED(IDC_BUTTON_SEARCH, &CMyFormView::OnSearch)
+	ON_BN_CLICKED(IDC_BUTTON_EDIT, &CMyFormView::OnEdit)
 END_MESSAGE_MAP()
 
 
@@ -109,6 +110,34 @@ void CMyFormView::OnSearch()
 
 void CMyFormView::OnSaveFile()
 {
+}
+
+void CMyFormView::OnEdit()
+{
+	int itemCount = listbox.GetCount();
+
+	for (int i = 0; i < itemCount; ++i)
+	{
+		BOOL isSelected = listbox.GetSel(i);
+
+		if (isSelected)
+		{
+			//편집
+			CString name, phone;
+			listbox.GetText(i, name);
+			listbox.GetText(i, phone);
+
+			CDlgNewAddr dlg(name, phone);
+			if (dlg.DoModal() == IDOK)
+			{
+				listbox.DeleteString(i);
+				listbox.InsertString(i, dlg.m_strName + _T(" [") + dlg.m_strPhone + _T("]"));
+				GetDocument()->NewAddr(dlg.m_strName, dlg.m_strPhone);
+
+				break;
+			}
+		}
+	}
 }
 
 
