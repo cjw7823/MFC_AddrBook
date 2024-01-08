@@ -37,8 +37,8 @@ public:
 	afx_msg void OnNewAddr();
 	afx_msg void OnSearch();
 	afx_msg void OnSaveFile();
-//	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnEdit();
+	afx_msg void OnBnClickedButtonSort();
 };
 
 

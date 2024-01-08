@@ -2,6 +2,7 @@
 // Microsoft Visual C++에서 생성한 포함 파일입니다.
 // AddrBook.rc에서 사용되고 있습니다.
 //
+#define IDCANCLE                        2
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define IDD_FORMVIEW                    101
@@ -21,6 +22,8 @@
 #define IDC_LIST2                       1024
 #define IDC_LIST1                       1024
 #define IDC_EDIT1                       1025
+#define IDC_BUTTON_EDIT2                1025
+#define IDC_BUTTON_SORT                 1025
 #define ID_32771                        32771
 #define ID_New_Addr                     32772
 #define ID_32773                        32773

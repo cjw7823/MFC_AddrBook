@@ -22,11 +22,10 @@ CDlgNewAddr::CDlgNewAddr(CWnd* pParent /*=nullptr*/)
 
 CDlgNewAddr::CDlgNewAddr(CString name, CString phone, CWnd* pParent)
 	: CDialogEx(IDD_DIALOG_NEW_ADDR, pParent)
-	, m_strName(_T(""))
-	, m_strPhone(_T(""))
+	, m_strName(name)
+	, m_strPhone(phone)
 {
-	m_NameCtrl.SetWindowTextW(name);
-	m_PhoneCtrl.SetWindowTextW(phone);
+
 }
 
 CDlgNewAddr::~CDlgNewAddr()

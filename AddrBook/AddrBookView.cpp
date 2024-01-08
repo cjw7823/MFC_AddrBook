@@ -158,6 +158,8 @@ void CAddrBookView::OnInitialUpdate()
 
 	CRect rc;
 	GetClientRect(&rc);
+	rc.left -= 10;
+	rc.top -= 10;
 
 	CCreateContext cc;
 

@@ -12,6 +12,8 @@
 
 #include "AddrBookDoc.h"
 
+#include <locale.h>
+
 #include <propkey.h>
 
 #ifdef _DEBUG
@@ -38,6 +40,49 @@ CAddrBookDoc::~CAddrBookDoc()
 {
 }
 
+BOOL CAddrBookDoc::OnSaveDocument(LPCTSTR lpszPathName)
+{
+	CStdioFile file;
+	if (file.Open(lpszPathName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary))
+	{
+		CString dataToSave;
+		POSITION pos = m_ptrList.GetHeadPosition();
+		while (pos != NULL)
+		{
+			CUserData* data = static_cast<CUserData*>(m_ptrList.GetNext(pos));
+			dataToSave += data->GetName() + L"," + data->GetPhone() + L"\r\n";
+		}
+		CStringA utf8Data(dataToSave);
+		file.Write(utf8Data, utf8Data.GetLength());
+		file.Close();
+
+		return 1;
+	}
+
+	return 0;
+}
+
+BOOL CAddrBookDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	CStdioFile file;
+	setlocale(LC_ALL, "korean");
+	if (file.Open(lpszPathName, CFile::modeRead | CFile::typeText))
+	{
+		CString line;
+		while (file.ReadString(line))
+		{
+			//TRACE(_T("%s\n"), line);
+
+		}
+
+		file.Close();
+
+		return 1;
+	}
+
+	return 0;
+}
+
 BOOL CAddrBookDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
@@ -48,8 +93,6 @@ BOOL CAddrBookDoc::OnNewDocument()
 
 	return TRUE;
 }
-
-
 
 
 // CAddrBookDoc serialization
@@ -143,6 +186,25 @@ int CAddrBookDoc::NewAddr(CString name, CString phone)
 	CUserData *pNew = new CUserData(name, phone);
 
 	m_ptrList.AddTail(pNew);
+
+	return 0;
+}
+
+int CAddrBookDoc::EditAddr(CString name, CString phone, CUserData editData)
+{
+	CUserData* pNew = new CUserData(name, phone);
+
+	POSITION position = m_ptrList.Find(&editData);
+	m_ptrList.RemoveAt(position);
+
+	POSITION pos = m_ptrList.GetHeadPosition();
+	while (pos != NULL)
+	{
+		CUserData* pNode = (CUserData*)m_ptrList.GetNext(pos);
+		TRACE(_T("%s , %s"), pNode->GetName(), pNode->GetPhone());
+	}
+
+	//m_ptrList.InsertBefore(editPos, pNew);
 
 	return 0;
 }

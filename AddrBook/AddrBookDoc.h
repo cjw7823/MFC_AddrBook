@@ -30,12 +30,15 @@ public:
 // 구현입니다.
 public:
 	virtual ~CAddrBookDoc();
+	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName) override;
+	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName) override;
+
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
+//protected:
 	CPtrList m_ptrList;
 
 // 생성된 메시지 맵 함수
@@ -48,6 +51,7 @@ protected:
 #endif // SHARED_HANDLERS
 public:
 	int NewAddr(CString name, CString phone);
+	int EditAddr(CString name, CString phone, CUserData editData);
 	void ReleaseList();
 	CUserData FindUser(CString name);
 };
