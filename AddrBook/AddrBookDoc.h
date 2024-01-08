@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "CMyFormView.h"
 
 class CAddrBookDoc : public CDocument
 {
@@ -40,6 +41,8 @@ public:
 
 //protected:
 	CPtrList m_ptrList;
+private:
+	CListBox* m_listBox;
 
 // 생성된 메시지 맵 함수
 protected:
@@ -54,4 +57,5 @@ public:
 	int EditAddr(CString name, CString phone, CUserData editData);
 	void ReleaseList();
 	CUserData FindUser(CString name);
+	void SetListBoxPtr(CListBox* listBox) { m_listBox = listBox; };
 };

@@ -45,6 +45,7 @@ void CMyFormView::DoDataExchange(CDataExchange* pDX)
 	CFormView::DoDataExchange(pDX);
 
 	DDX_Control(pDX, IDC_LIST1, listbox);
+	GetDocument()->SetListBoxPtr(&listbox);
 }
 
 BEGIN_MESSAGE_MAP(CMyFormView, CFormView)

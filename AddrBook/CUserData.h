@@ -20,6 +20,14 @@ public:
     CString GetName() { return m_strName; }
     CString GetPhone() { return m_strPhone; }
 
+    bool operator==(CUserData otherData)
+    {
+        if (this->m_strName == otherData.m_strName && this->m_strPhone == otherData.m_strPhone)
+            return true;
+
+        return false;
+    }
+
 private:
     CString m_strName;
     CString m_strPhone;

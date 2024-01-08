@@ -68,14 +68,20 @@ BOOL CAddrBookDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	setlocale(LC_ALL, "korean");
 	if (file.Open(lpszPathName, CFile::modeRead | CFile::typeText))
 	{
+		ReleaseList();
+
 		CString line;
 		while (file.ReadString(line))
 		{
-			//TRACE(_T("%s\n"), line);
+			int start = 0;
+			CString name = line.Tokenize(L",", start);
+			CString phone = line.Tokenize(L",", start);			
+			CUserData* pNew = new CUserData(name, phone);
+			m_ptrList.AddTail(pNew);
 
+			m_listBox->AddString(name + _T(" [") + phone + _T("]"));
+			AfxGetMainWnd()->UpdateWindow(); // 메인 윈도우에 대한 UpdateWindow 호출
 		}
-
-		file.Close();
 
 		return 1;
 	}
@@ -194,17 +200,20 @@ int CAddrBookDoc::EditAddr(CString name, CString phone, CUserData editData)
 {
 	CUserData* pNew = new CUserData(name, phone);
 
-	POSITION position = m_ptrList.Find(&editData);
-	m_ptrList.RemoveAt(position);
-
 	POSITION pos = m_ptrList.GetHeadPosition();
 	while (pos != NULL)
 	{
 		CUserData* pNode = (CUserData*)m_ptrList.GetNext(pos);
-		TRACE(_T("%s , %s"), pNode->GetName(), pNode->GetPhone());
-	}
 
-	//m_ptrList.InsertBefore(editPos, pNew);
+		if (*pNode == editData)
+		{
+			//TRACE(_T("%s , %s\n"), pNode->GetName(), pNode->GetPhone());
+			POSITION findNode = m_ptrList.Find(pNode);
+			m_ptrList.SetAt(findNode, pNew);
+
+			break;
+		}
+	}
 
 	return 0;
 }
@@ -220,6 +229,8 @@ void CAddrBookDoc::ReleaseList()
 		//OutputDebugString(pNode->GetName() + _T("----------------------------\n"));
 		delete pNode;
 	}
+
+	m_ptrList.RemoveAll();
 }
 
 
