@@ -24,6 +24,8 @@
 #define IDC_EDIT1                       1025
 #define IDC_BUTTON_EDIT2                1025
 #define IDC_BUTTON_SORT                 1025
+#define IDC_BUTTON_EDIT3                1026
+#define IDC_BUTTON_DELETE               1026
 #define ID_32771                        32771
 #define ID_New_Addr                     32772
 #define ID_32773                        32773

@@ -39,6 +39,7 @@ public:
 	afx_msg void OnSaveFile();
 	afx_msg void OnEdit();
 	afx_msg void OnBnClickedButtonSort();
+	afx_msg void OnBnClickedDelete();
 };
 
 

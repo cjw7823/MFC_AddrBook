@@ -150,7 +150,7 @@ void CAddrBookView::OnSearch()
 void CAddrBookView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
-
+	
 	CAddrBookDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)

@@ -69,18 +69,19 @@ BOOL CAddrBookDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (file.Open(lpszPathName, CFile::modeRead | CFile::typeText))
 	{
 		ReleaseList();
+		m_listBox->ResetContent();
 
 		CString line;
 		while (file.ReadString(line))
 		{
 			int start = 0;
 			CString name = line.Tokenize(L",", start);
+			start = 0;
 			CString phone = line.Tokenize(L",", start);			
 			CUserData* pNew = new CUserData(name, phone);
 			m_ptrList.AddTail(pNew);
 
 			m_listBox->AddString(name + _T(" [") + phone + _T("]"));
-			AfxGetMainWnd()->UpdateWindow(); // 메인 윈도우에 대한 UpdateWindow 호출
 		}
 
 		return 1;

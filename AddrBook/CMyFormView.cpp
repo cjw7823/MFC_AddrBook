@@ -66,6 +66,7 @@ BEGIN_MESSAGE_MAP(CMyFormView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON_SEARCH, &CMyFormView::OnSearch)
 	ON_BN_CLICKED(IDC_BUTTON_EDIT, &CMyFormView::OnEdit)
 	ON_BN_CLICKED(IDC_BUTTON_SORT, &CMyFormView::OnBnClickedButtonSort)
+	ON_BN_CLICKED(IDC_BUTTON_DELETE, &CMyFormView::OnBnClickedDelete)
 END_MESSAGE_MAP()
 
 
@@ -147,6 +148,8 @@ void CMyFormView::OnEdit()
 
 				break;
 			}
+
+			break;
 		}
 	}
 }
@@ -204,4 +207,51 @@ int SortDescending(const void* p1, const void* p2)
 	CString* s2 = (CString*)p2;
 
 	return _tcscmp(s1->GetBuffer(0), s2->GetBuffer(0)) * -1;
+}
+
+void CMyFormView::OnBnClickedDelete()
+{
+	int itemCount = listbox.GetCount();
+
+	for (int i = 0; i < itemCount; ++i)
+	{
+		BOOL isSelected = listbox.GetSel(i);
+
+		if (isSelected)
+		{
+			//리스트 박스 삭제
+			CString name, phone;
+			listbox.GetText(i, name);
+			listbox.GetText(i, phone);
+
+			int openIndex = name.Find(L"[");
+			phone = phone.Mid(openIndex + 1, name.GetLength() - openIndex - 2);
+			if (openIndex > 1)//이름과 번호 사이 공백을 감안. 1인 경우, 이름 없이 ' []'임.
+				name = name.Left(openIndex - 1);
+			else//이름이 없는 경우
+				name = L"";
+						
+			listbox.DeleteString(i);
+
+			//자료구조 리스트 삭제
+			CUserData data(name, phone);
+
+			POSITION pos = GetDocument()->m_ptrList.GetHeadPosition();
+			while (pos != NULL)
+			{
+				CUserData* pNode = (CUserData*)GetDocument()->m_ptrList.GetNext(pos);
+
+				if (*pNode == data)
+				{
+					POSITION findNode = GetDocument()->m_ptrList.Find(pNode);
+					GetDocument()->m_ptrList.RemoveAt(findNode);
+
+					break;
+				}
+			}
+
+			listbox.SetCurSel(i);
+			break;
+		}
+	}
 }

@@ -48,7 +48,7 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnNewAddr();
 	afx_msg void OnSearch();
-	virtual void OnInitialUpdate();
+	virtual void OnInitialUpdate() override;
 };
 
 #ifndef _DEBUG  // AddrBookView.cpp의 디버그 버전
